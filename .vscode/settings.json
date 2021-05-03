@@ -1,6 +1,7 @@
 {
     "java.project.sourcePaths": [
+        "knapsack 01",
         "dijkastra",
-        "knapsack 01"
+        "n queen"
     ]
 }

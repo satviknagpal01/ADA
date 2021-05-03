@@ -1,84 +1,50 @@
 import java.util.Scanner;
-class queen
-{
-	public static void main(String args[])
-	{
-		Scanner sc=new Scanner(System.in);
-		int n=sc.nextInt();
-		Solve(n);
-		
-	}
-	public static void Solve(int n)
-	{
-		int k=1;
-		int a[]=new int[n+1];
-		a[k]=0;
-		while(k>0)
-		{	
-			if(a[k]==n)
-				a[k]=1;
-			else
-				a[k]++;
-			if(check(a,n,k,a[k])==0)
-			{	for(int i=1;i<=n;i++)
-				{
-					if(check(a,n,k,a[k])==0)
-					{
-						
-						if(a[k]==n)
-							a[k]=1;
-						else
-							a[k]++;
 
-					}
-					else if(check(a,n,k,a[k])==1)
-					{	
-						break;
-					}
-				}
-			}
-			if(check(a,n,k,a[k])==1)
-			{
-				if(k==n)
-					break;
-				else
-				{
-					k++;
-					a[k]=0;
-				}
-			}
-			else if(check(a,n,k,a[k])==0)
-			{
-				k=k-1;
-			}
-			
-			
-			
-		}
-		for(int i=1;i<=n;i++)
-		{
-			System.out.print(a[i]+" ");
-		}
+public class queen {  
+    private void print(int[][] board){
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                System.out.printf(" %d", board[i][j]);
+            }
+            System.out.println();
+        }
+    }
 
-	}
-	public static int check(int a[],int n,int row,int col)
-	{
-		int check=1;
-		for(int i=1;i<row;i++)
-		{
-			if(a[i]!=0)
-			{	if(a[i]==col || i+a[i]==row+col || i-a[i]==row-col)
-				{	
-					check=0;
-					break;
-				}
-			}
-		//	System.out.println(i);
-		}
-	//		System.out.println("check:"+check);
-			//System.out.println("row"+row+"col:"+col);
+    private boolean isValid(int[][] board, int row, int col) {
+        for (int i = 0; i < col; i++) {
+            if (board[row][i] == 1) return false;
+        }
 
-		return check;
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 1) return false;
+        }
+        for (int i = row, j = col; i < board.length && j >= 0 ; i++, j--) {
+            if (board[i][j] == 1) return false;
+        }
+        return true;
+    }
 
-	}
+    public boolean enumerate(int[][] board, int col) {
+        if (col == board.length) return true;
+        for (int i = 0; i < board.length; i++) {
+            if (isValid(board, i, col)) {
+                board[i][col] = 1;
+                if (enumerate(board, col+1)) return true;
+                board[i][col] = 0;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args){
+        queen q = new queen();
+		int n ;
+		Scanner sc = new Scanner(System.in);
+		n= sc.nextInt();
+        int[][] board = new int[n][n];
+        if (!q.enumerate(board, 0)) {
+            System.out.println("not found");
+        }
+        q.print(board);
+    }
 }
